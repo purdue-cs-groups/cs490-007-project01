@@ -1,12 +1,15 @@
 ﻿<Rules>
+  
   <Rule Name="Matt's Fitbit" Module="Fitbit1">
     <User Name="Matt" Type="Allow">
       <Service FriendlyName="Fitbit1"/>
     </User>
   </Rule>
-  <Rule Name="Joe's Fitbit" Module="Fitbit2">
+  
+  <!--<Rule Name="Joe's Fitbit" Module="Fitbit2">
     <User Name="Matt" Type="Allow">
       <Service FriendlyName="Fitbit2"/>
     </User>
-  </Rule>
+  </Rule>-->
+  
 </Rules>

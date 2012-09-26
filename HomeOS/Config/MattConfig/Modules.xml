@@ -1,4 +1,5 @@
 ﻿<Modules>
+  
   <Module FriendlyName="Fitbit1" AppName="DriverFitbitUltra by Matt" BinaryName="DriverFitbitUltra" AutoStart="1">
     <Args Count="4" val1="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                     val2="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -9,7 +10,7 @@
     </RoleList>
   </Module>
 
-  <Module FriendlyName="Fitbit2" AppName="DriverFitbitUltra by Matt" BinaryName="DriverFitbitUltra" AutoStart="1">
+  <!--<Module FriendlyName="Fitbit2" AppName="DriverFitbitUltra by Matt" BinaryName="DriverFitbitUltra" AutoStart="1">
     <Args Count="4" val1="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                     val2="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                     val3="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -17,11 +18,12 @@
     <RoleList>
       <Role Name="fitbitUltra"/>
     </RoleList>
-  </Module>
+  </Module>-->
   
-  <Module FriendlyName="FitbitUltraStats" AppName="AppFitbitUltraStats by Matt" BinaryName="AppFitbitUltraStats" AutoStart="1">
+  <Module FriendlyName="FitbitUltraPresence" AppName="AppFitbitUltraPresence by Matt" BinaryName="AppFitbitUltraPresence" AutoStart="1">
     <RoleList>
       <Role Name="fitbitUltra"/>
     </RoleList>
   </Module>
+  
 </Modules>

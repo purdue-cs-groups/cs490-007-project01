@@ -4,8 +4,8 @@
     <Role Name="fitbitUltra"/>
   </Service>
 
-  <Service FriendlyName="Fitbit2" Location="Virtual" Module="Fitbit2" ModuleFacingName="Joe's Fitbit">
+  <!--<Service FriendlyName="Fitbit2" Location="Virtual" Module="Fitbit2" ModuleFacingName="Joe's Fitbit">
     <Role Name="fitbitUltra"/>
-  </Service>
+  </Service>-->
 
 </Services>
