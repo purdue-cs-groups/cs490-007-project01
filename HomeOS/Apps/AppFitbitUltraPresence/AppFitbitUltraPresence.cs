@@ -13,7 +13,7 @@ namespace AppFitbitUltraPresence
 
         Dictionary<View.VPort, View.VCapability> otherFitbitUltraPorts;
 
-        bool lastResult = false;
+        bool lastResult = true;
 
         public override void Start()
         {
