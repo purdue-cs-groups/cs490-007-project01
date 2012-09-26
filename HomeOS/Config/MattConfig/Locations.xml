@@ -1,0 +1,8 @@
+﻿<Location Name="Home">
+  <Location Name="Unknown"/>
+  <Location Name="Virtual"/>
+  <Location Name="Outdoors">
+  </Location>
+  <Location Name="Indoors">
+  </Location>
+</Location>

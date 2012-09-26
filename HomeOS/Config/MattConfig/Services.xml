@@ -1,0 +1,11 @@
+﻿<Services>
+
+  <Service FriendlyName="Fitbit1" Location="Virtual" Module="Fitbit1" ModuleFacingName="Matt's Fitbit">
+    <Role Name="fitbitUltra"/>
+  </Service>
+
+  <Service FriendlyName="Fitbit2" Location="Virtual" Module="Fitbit2" ModuleFacingName="Joe's Fitbit">
+    <Role Name="fitbitUltra"/>
+  </Service>
+
+</Services>

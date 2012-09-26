@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4EC329C1-2F29-441E-9772-07475638CBF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DriverFitbitUltra</RootNamespace>
+    <AssemblyName>DriverFitbitUltra</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\output\Pipeline\AddIns\DriverFitbitUltra\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RestSharp, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AddIn" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DriverFitbitUltra.cs" />
+    <Compile Include="Fitbit\Authenticator.cs" />
+    <Compile Include="Fitbit\FitbitClient.cs" />
+    <Compile Include="Fitbit\FitbitException.cs" />
+    <Compile Include="Fitbit\Helpers\StringEnum.cs" />
+    <Compile Include="Fitbit\Models\Activity.cs" />
+    <Compile Include="Fitbit\Models\ActivityDistance.cs" />
+    <Compile Include="Fitbit\Models\ActivityGoals.cs" />
+    <Compile Include="Fitbit\Models\ActivityLog.cs" />
+    <Compile Include="Fitbit\Models\ActivitySummary.cs" />
+    <Compile Include="Fitbit\Models\ApiSubscription.cs" />
+    <Compile Include="Fitbit\Models\AuthCredential.cs" />
+    <Compile Include="Fitbit\Models\Body.cs" />
+    <Compile Include="Fitbit\Models\Device.cs" />
+    <Compile Include="Fitbit\Models\Enums\APICollectionType.cs" />
+    <Compile Include="Fitbit\Models\Enums\DeviceType.cs" />
+    <Compile Include="Fitbit\Models\Enums\IntradayResourceType.cs" />
+    <Compile Include="Fitbit\Models\Enums\ResourceOwnerType.cs" />
+    <Compile Include="Fitbit\Models\Enums\TimeSeriesResourceType.cs" />
+    <Compile Include="Fitbit\Models\Friend.cs" />
+    <Compile Include="Fitbit\Models\IntradayData.cs" />
+    <Compile Include="Fitbit\Models\Sleep.cs" />
+    <Compile Include="Fitbit\Models\SleepLog.cs" />
+    <Compile Include="Fitbit\Models\SleepSummary.cs" />
+    <Compile Include="Fitbit\Models\SubscriptionResponse.cs" />
+    <Compile Include="Fitbit\Models\TimeSeriesDataList.cs" />
+    <Compile Include="Fitbit\Models\TimeSeriesDataListInt.cs" />
+    <Compile Include="Fitbit\Models\UpdatedResource.cs" />
+    <Compile Include="Fitbit\Models\Updates.cs" />
+    <Compile Include="Fitbit\Models\User.cs" />
+    <Compile Include="Fitbit\Models\UserProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj">
+      <Project>{6F879B8B-C4B1-4E8D-9BF2-C6376B05E4EC}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\View\Views.csproj">
+      <Project>{71272F38-FC7D-4170-8411-51E27200C791}</Project>
+      <Name>Views</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

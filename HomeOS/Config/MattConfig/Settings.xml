@@ -1,0 +1,4 @@
+﻿<Settings>
+  <Param Name="PublicIp" value="localhost"/>
+  <Param Name="HomeId" Value="DefaultHomeId" />
+</Settings>
