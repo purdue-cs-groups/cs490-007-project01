@@ -100,26 +100,29 @@ namespace AppFitbitUltraPresence
                 return;
             }
 
+            bool result = false;
+
             string message = "";
             if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
             {
-                bool result = Convert.ToBoolean(retVals[0].Value());
+                result = Convert.ToBoolean(retVals[0].Value());
                 message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetDevicePresence, port.ToString(), result);
-
-                if (result == true &&
-                    lastResult == false)
-                {
-                    LogMessageToWindow("User has just entered the scene.");
-                }
-
-                lastResult = result;
             }
             else
             {
                 message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetDevicePresence, port.ToString());
+                return;
             }
 
             LogMessageToWindow(message);
+
+            if (result == true &&
+                lastResult == false)
+            {
+                LogMessageToWindow("User has just entered the scene.");
+            }
+
+            lastResult = result;
         }
 
         public void LogMessageToWindow(string message)
