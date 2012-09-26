@@ -81,7 +81,7 @@ namespace AppFitbitUltraPresence
                     }
                 }
 
-                System.Threading.Thread.Sleep(1 * 15 * 1000); // sleep 15 seconds
+                System.Threading.Thread.Sleep(1 * 30 * 1000); // sleep 30 seconds
             }
         }
 
