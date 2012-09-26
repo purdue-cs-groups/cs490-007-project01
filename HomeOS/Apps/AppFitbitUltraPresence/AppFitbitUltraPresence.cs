@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,27 +9,24 @@ namespace AppFitbitUltraPresence
     [System.AddIn.AddIn("AppFitbitUltraPresence")]
     public class AppFitbitUltraPresence : ModuleBase
     {
-        bool showWindow = true;
         LogWindow logWindow;
 
-        // the dictionary for other Fitbit Ultra ports in the system
         Dictionary<View.VPort, View.VCapability> otherFitbitUltraPorts;
+
+        bool lastResult = false;
 
         public override void Start()
         {
             logger.Log("Starting {0}", ToString());
  
-            // instantiate the list of other ports that we are interested in
             otherFitbitUltraPorts = new Dictionary<View.VPort, View.VCapability>();
 
-            // get the list of current ports from the platform
             IList<View.VPort> allPortsList = GetAllPortsFromPlatform();
 
             if (allPortsList != null)
                 ProcessAllPortsList(allPortsList);
 
-            if (showWindow)
-                ShowWindow();
+            ShowWindow();
 
             Work();
         }
@@ -103,23 +100,30 @@ namespace AppFitbitUltraPresence
                 return;
             }
 
-            LogMessageToWindow(port, RoleFitbitUltra.OpGetDevicePresence, retVals);
-        }
-
-        public void LogMessageToWindow(View.VPort port, string operationName, IList<View.VParamType> retVals)
-        {
             string message = "";
-
             if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
             {
-                string result =  retVals[0].Value().ToString();
-                message = String.Format("{0} success to {1} result = {2}", operationName, port.ToString(), result);
+                bool result = Convert.ToBoolean(retVals[0].Value());
+                message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetDevicePresence, port.ToString(), result);
+
+                if (result == true &&
+                    lastResult == false)
+                {
+                    LogMessageToWindow("User has just entered the scene.");
+                }
+
+                lastResult = result;
             }
             else
             {
-                message = String.Format("{0} failure to {1}", operationName, port.ToString());
+                message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetDevicePresence, port.ToString());
             }
 
+            LogMessageToWindow(message);
+        }
+
+        public void LogMessageToWindow(string message)
+        {
             logger.Log("{0} {1}", this.ToString(), message);
 
             if (logWindow != null)
@@ -132,12 +136,10 @@ namespace AppFitbitUltraPresence
 
         public void RequestCapabilities(View.VPort port)
         {
-            // if we do not have a capability, lets try to get one
             if (otherFitbitUltraPorts[port] == null)
             {
                 otherFitbitUltraPorts[port] = GetCapability(port, Globals.UserSystem);
 
-                // if we just got the capability, subscribe to the port
                 if (otherFitbitUltraPorts[port] != null)
                 {
                     port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDevicePresence, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
@@ -161,7 +163,6 @@ namespace AppFitbitUltraPresence
             {
                 if (!otherFitbitUltraPorts.ContainsKey(port) && Role.ContainsRole(port, RoleFitbitUltra.RoleName) && !IsMyPort(port))
                 {
-                    // we'll get the capability the first time we send a message
                     otherFitbitUltraPorts[port] = null;
                     logger.Log("{0} added port {1}", this.ToString(), port.ToString());
 
