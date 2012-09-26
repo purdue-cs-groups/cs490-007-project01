@@ -31,7 +31,7 @@ namespace AppFitbitUltraPresence
             while (queue.Count >= capacity)
                 queue.Dequeue();
 
-            queue.Enqueue((++messageNumber).ToString("000") + ": " + text + "\n");
+            queue.Enqueue((++messageNumber).ToString("000") + ":\t" + text + "\n");
 
             return this.ToString();
         }
