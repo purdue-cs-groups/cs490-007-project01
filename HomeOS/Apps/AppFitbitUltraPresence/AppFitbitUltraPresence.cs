@@ -140,13 +140,7 @@ namespace AppFitbitUltraPresence
                 // if we just got the capability, subscribe to the port
                 if (otherFitbitUltraPorts[port] != null)
                 {
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetActiveScoreName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetCaloriesOutName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDistanceName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetStepsName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetTotalMinutesAsleep, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetTotalSleepRecords, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetTotalTimeInBed, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
+                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDevicePresence, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
                 }
             }
         }
