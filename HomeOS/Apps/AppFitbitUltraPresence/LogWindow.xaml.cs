@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace AppFitbitUltraPresence
             while (queue.Count >= capacity)
                 queue.Dequeue();
 
-            queue.Enqueue(++messageNumber + ": " + text + "\n");
+            queue.Enqueue((++messageNumber).ToString("000") + ": " + text + "\n");
 
             return this.ToString();
         }
