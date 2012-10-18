@@ -1,0 +1,27 @@
+﻿<Roles>
+  <Role Id="1" Name="motiondetector" />
+  <Role Id="2" Name="tv" />
+  <Role Id="3" Name="speaker" />
+  <Role Id="4" Name="dvdplayer" />
+  <Role Id="5" Name="thermostat" />
+  <Role Id="6" Name="microphone" />
+  <Role Id="7" Name="lock" />
+  <Role Id="8" Name="windowshades"/>
+  <Role Id="9" Name="sensor"/>
+  
+  <Role Id="10" Name="image-recognize" />
+  <Role Id="11" Name="SwitchMultiLevel" />
+  <Role Id="12" Name="dms"/>
+  <Role Id="13" Name="dmr"/>
+  <Role Id="14" Name="camera"/>
+  <Role Id="15" Name="axis-camera"/>
+  <Role Id="16" Name="dummy"/>
+  <Role Id="17" Name="BenchmarkerDriver"/>
+  <Role Id="18" Name="BenchmarkerApp"/>
+
+  <Role Id="20" Name="programmablethermostat"/>
+  <Role Id="21" Name="dummy2"/>
+  <Role Id="22" Name="switchbinary"/>
+
+  <Role Id="23" Name="fitbitUltra"/>
+</Roles>

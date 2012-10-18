@@ -76,13 +76,18 @@ namespace AppFitbitUltraStats
 
                         if (otherFitbitUltraPorts[port] != null)
                         {
-                            SendGetActiveScoreRequest(port, otherFitbitUltraPorts[port], counter);
-                            SendGetCaloriesOutRequest(port, otherFitbitUltraPorts[port], counter);
-                            SendGetDistanceRequest(port, otherFitbitUltraPorts[port], counter);
-                            SendGetStepsRequest(port, otherFitbitUltraPorts[port], counter);
-                            SendGetTotalMinutesAsleepRequest(port, otherFitbitUltraPorts[port], counter);
-                            SendGetTotalSleepRecordspRequest(port, otherFitbitUltraPorts[port], counter);
-                            SendGetTotalTimeInBedRequest(port, otherFitbitUltraPorts[port], counter);
+                            if (counter == 1)
+                            {
+                                SendGetActiveScoreRequest(port, otherFitbitUltraPorts[port], counter);
+                                SendGetCaloriesOutRequest(port, otherFitbitUltraPorts[port], counter);
+                                SendGetDistanceRequest(port, otherFitbitUltraPorts[port], counter);
+                                SendGetStepsRequest(port, otherFitbitUltraPorts[port], counter);
+                                SendGetTotalMinutesAsleepRequest(port, otherFitbitUltraPorts[port], counter);
+                                SendGetTotalSleepRecordspRequest(port, otherFitbitUltraPorts[port], counter);
+                                SendGetTotalTimeInBedRequest(port, otherFitbitUltraPorts[port], counter);
+                            }
+
+                            SendGetDevicePresenceMethod(port, otherFitbitUltraPorts[port], counter);
                         }
                     }
                 }
@@ -231,6 +236,25 @@ namespace AppFitbitUltraStats
             }
 
             LogMessageToWindow(port, RoleFitbitUltra.OpGetTotalTimeInBed, retVals);
+        }
+
+        public void SendGetDevicePresenceMethod(View.VPort port, View.VCapability capability, int counter)
+        {
+            IList<View.VParamType> retVals;
+
+            try
+            {
+                IList<View.VParamType> parameters = new List<View.VParamType>();
+                
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDevicePresence, parameters, ControlPort, capability, ControlPortCapability);
+            }
+            catch (Exception e)
+            {
+                logger.Log("Error while calling getDevicePresence request: {0}", e.ToString());
+                return;
+            }
+
+            LogMessageToWindow(port, RoleFitbitUltra.OpGetDevicePresence, retVals);
         }
 
         public void LogMessageToWindow(View.VPort port, string operationName, IList<View.VParamType> retVals)
