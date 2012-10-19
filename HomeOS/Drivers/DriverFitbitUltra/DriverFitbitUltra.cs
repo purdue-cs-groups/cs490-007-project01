@@ -139,6 +139,16 @@ namespace DriverNotifications
                     }
                     break;
 
+                case RoleFitbitUltra.OpGetHasRecentActivity:
+                    {
+                        Activity data = client.GetDayActivity(DateTime.Now);
+
+                        bool result = data.Activities.Where(z => z.HasStartTime == true &&
+                                                                 Convert.ToDateTime(z.StartTime).AddSeconds(z.Duration / 1000) >= DateTime.Now.AddMinutes(-30)).Count() > 0;
+                        retVals.Add(new ParamType(ParamType.SimpleType.binary, "bool", result, "result"));
+                    }
+                    break;
+
                 default:
                     logger.Log("Invalid operation {0}", opName);
                     break;

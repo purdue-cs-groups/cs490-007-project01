@@ -381,6 +381,7 @@ namespace Common
         public const string OpGetTotalTimeInBed = "getTotalTimeInBed";
 
         public const string OpGetDevicePresence = "getDevicePresence";
+        public const string OpGetHasRecentActivity = "getHasRecentActivity";
 
         public RoleFitbitUltra()
             : base(RoleName)
@@ -517,6 +518,19 @@ namespace Common
                 paramList.Add(new ParamType(ParamType.SimpleType.binary, "", null, "result"));
 
                 AddOperation(new Operation(RoleFitbitUltra.OpGetDevicePresence, paramList, retList));
+            }
+
+            {
+                List<View.VParamType> paramList = new List<View.VParamType>();
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "consumerKey"));
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "consumerSecret"));
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "accessToken"));
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "tokenSecret"));
+
+                List<View.VParamType> retList = new List<View.VParamType>();
+                paramList.Add(new ParamType(ParamType.SimpleType.binary, "", null, "result"));
+
+                AddOperation(new Operation(RoleFitbitUltra.OpGetHasRecentActivity, paramList, retList));
             }
 
         }
