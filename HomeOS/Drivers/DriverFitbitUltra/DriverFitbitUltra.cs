@@ -50,7 +50,7 @@ namespace DriverNotifications
             
             switch (opName)
             {
-                case RoleFitbitUltra.OpGetActiveScoreName:
+                case RoleFitbitUltra.OpGetActiveScore:
                     {
                         DateTime activityDate = (DateTime)parameters[0].Value();
                         ActivitySummary data = client.GetDayActivitySummary(activityDate);
@@ -60,7 +60,7 @@ namespace DriverNotifications
                     }
                     break;
 
-                case RoleFitbitUltra.OpGetCaloriesOutName:
+                case RoleFitbitUltra.OpGetCaloriesOut:
                     {
                         DateTime activityDate = (DateTime)parameters[0].Value();
                         ActivitySummary data = client.GetDayActivitySummary(activityDate);
@@ -70,7 +70,7 @@ namespace DriverNotifications
                     }
                     break;
 
-                case RoleFitbitUltra.OpGetDistanceName:
+                case RoleFitbitUltra.OpGetDistance:
                     {
                         DateTime activityDate = (DateTime)parameters[0].Value();
                         ActivitySummary data = client.GetDayActivitySummary(activityDate);
@@ -80,12 +80,22 @@ namespace DriverNotifications
                     }
                     break;
 
-                case RoleFitbitUltra.OpGetStepsName:
+                case RoleFitbitUltra.OpGetSteps:
                     {
                         DateTime activityDate = (DateTime)parameters[0].Value();
                         ActivitySummary data = client.GetDayActivitySummary(activityDate);
 
                         int result = data.Steps;
+                        retVals.Add(new ParamType(ParamType.SimpleType.integer, "int", result, "result"));
+                    }
+                    break;
+
+                case RoleFitbitUltra.OpGetStepsGoal:
+                    {
+                        DateTime activityDate = (DateTime)parameters[0].Value();
+                        Activity data = client.GetDayActivity(activityDate);
+
+                        int result = data.Goals.Steps;
                         retVals.Add(new ParamType(ParamType.SimpleType.integer, "int", result, "result"));
                     }
                     break;

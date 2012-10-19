@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppFitbitUltraPresence
+namespace AppFitbitUltraTV
 {
     public class ConsoleMessages
     {
@@ -53,7 +53,7 @@ namespace AppFitbitUltraPresence
     {
         ConsoleMessages consoleMessages = new ConsoleMessages();
 
-        public LogWindow(AppFitbitUltraPresence window, View.VLogger logger, string friendlyName, params string[] args)
+        public LogWindow(AppFitbitUltraTV window, View.VLogger logger, string friendlyName, params string[] args)
         {
             InitializeComponent();
             Title = string.Format("Log Window: {0}\n", friendlyName);

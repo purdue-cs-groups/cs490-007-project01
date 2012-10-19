@@ -369,10 +369,12 @@ namespace Common
     {
         public const string RoleName = "fitbitUltra";
 
-        public const string OpGetActiveScoreName = "getActiveScore";
-        public const string OpGetCaloriesOutName = "getCaloriesOut";
-        public const string OpGetDistanceName = "getDistance";
-        public const string OpGetStepsName = "getSteps";
+        public const string OpGetActiveScore = "getActiveScore";
+        public const string OpGetCaloriesOut = "getCaloriesOut";
+        public const string OpGetDistance = "getDistance";
+        public const string OpGetSteps = "getSteps";
+
+        public const string OpGetStepsGoal = "getStepsGoal";
 
         public const string OpGetTotalMinutesAsleep = "getTotalMinutesAsleep";
         public const string OpGetTotalSleepRecords = "getTotalSleepRecords";
@@ -396,7 +398,7 @@ namespace Common
                 List<View.VParamType> retList = new List<View.VParamType>();
                 paramList.Add(new ParamType(ParamType.SimpleType.integer, "", null, "result"));
 
-                AddOperation(new Operation(RoleFitbitUltra.OpGetActiveScoreName, paramList, retList));
+                AddOperation(new Operation(RoleFitbitUltra.OpGetActiveScore, paramList, retList));
             }
 
             {
@@ -411,7 +413,7 @@ namespace Common
                 List<View.VParamType> retList = new List<View.VParamType>();
                 paramList.Add(new ParamType(ParamType.SimpleType.integer, "", null, "result"));
 
-                AddOperation(new Operation(RoleFitbitUltra.OpGetCaloriesOutName, paramList, retList));
+                AddOperation(new Operation(RoleFitbitUltra.OpGetCaloriesOut, paramList, retList));
             }
 
             {
@@ -426,7 +428,7 @@ namespace Common
                 List<View.VParamType> retList = new List<View.VParamType>();
                 paramList.Add(new ParamType(ParamType.SimpleType.binary, "", null, "result"));
 
-                AddOperation(new Operation(RoleFitbitUltra.OpGetDistanceName, paramList, retList));
+                AddOperation(new Operation(RoleFitbitUltra.OpGetDistance, paramList, retList));
             }
 
             {
@@ -441,7 +443,22 @@ namespace Common
                 List<View.VParamType> retList = new List<View.VParamType>();
                 paramList.Add(new ParamType(ParamType.SimpleType.integer, "", null, "result"));
 
-                AddOperation(new Operation(RoleFitbitUltra.OpGetStepsName, paramList, retList));
+                AddOperation(new Operation(RoleFitbitUltra.OpGetSteps, paramList, retList));
+            }
+
+            {
+                List<View.VParamType> paramList = new List<View.VParamType>();
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "consumerKey"));
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "consumerSecret"));
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "accessToken"));
+                paramList.Add(new ParamType(ParamType.SimpleType.text, "string", null, "tokenSecret"));
+
+                paramList.Add(new ParamType(ParamType.SimpleType.binary, "DateTime", null, "activityDate"));
+
+                List<View.VParamType> retList = new List<View.VParamType>();
+                paramList.Add(new ParamType(ParamType.SimpleType.integer, "", null, "result"));
+
+                AddOperation(new Operation(RoleFitbitUltra.OpGetStepsGoal, paramList, retList));
             }
 
             {

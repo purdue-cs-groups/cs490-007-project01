@@ -107,7 +107,7 @@ namespace AppFitbitUltraStats
                 IList<View.VParamType> parameters = new List<View.VParamType>();
                 parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
 
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetActiveScoreName, parameters, ControlPort, capability, ControlPortCapability);
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetActiveScore, parameters, ControlPort, capability, ControlPortCapability);
             }
             catch (Exception e)
             {
@@ -115,7 +115,7 @@ namespace AppFitbitUltraStats
                 return;
             }
 
-            LogMessageToWindow(port, RoleFitbitUltra.OpGetActiveScoreName, retVals);
+            LogMessageToWindow(port, RoleFitbitUltra.OpGetActiveScore, retVals);
         }
 
         public void SendGetCaloriesOutRequest(View.VPort port, View.VCapability capability, int counter)
@@ -127,7 +127,7 @@ namespace AppFitbitUltraStats
                 IList<View.VParamType> parameters = new List<View.VParamType>();
                 parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
 
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetCaloriesOutName, parameters, ControlPort, capability, ControlPortCapability);
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetCaloriesOut, parameters, ControlPort, capability, ControlPortCapability);
             }
             catch (Exception e)
             {
@@ -135,7 +135,7 @@ namespace AppFitbitUltraStats
                 return;
             }
 
-            LogMessageToWindow(port, RoleFitbitUltra.OpGetCaloriesOutName, retVals);
+            LogMessageToWindow(port, RoleFitbitUltra.OpGetCaloriesOut, retVals);
         }
 
         public void SendGetDistanceRequest(View.VPort port, View.VCapability capability, int counter)
@@ -147,7 +147,7 @@ namespace AppFitbitUltraStats
                 IList<View.VParamType> parameters = new List<View.VParamType>();
                 parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
 
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDistanceName, parameters, ControlPort, capability, ControlPortCapability);
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDistance, parameters, ControlPort, capability, ControlPortCapability);
             }
             catch (Exception e)
             {
@@ -155,7 +155,7 @@ namespace AppFitbitUltraStats
                 return;
             }
 
-            LogMessageToWindow(port, RoleFitbitUltra.OpGetDistanceName, retVals);
+            LogMessageToWindow(port, RoleFitbitUltra.OpGetDistance, retVals);
         }
 
         public void SendGetStepsRequest(View.VPort port, View.VCapability capability, int counter)
@@ -167,7 +167,7 @@ namespace AppFitbitUltraStats
                 IList<View.VParamType> parameters = new List<View.VParamType>();
                 parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
 
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetStepsName, parameters, ControlPort, capability, ControlPortCapability);
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetSteps, parameters, ControlPort, capability, ControlPortCapability);
             }
             catch (Exception e)
             {
@@ -175,7 +175,7 @@ namespace AppFitbitUltraStats
                 return;
             }
 
-            LogMessageToWindow(port, RoleFitbitUltra.OpGetStepsName, retVals);
+            LogMessageToWindow(port, RoleFitbitUltra.OpGetSteps, retVals);
         }
 
         public void SendGetTotalMinutesAsleepRequest(View.VPort port, View.VCapability capability, int counter)
@@ -291,10 +291,10 @@ namespace AppFitbitUltraStats
                 // if we just got the capability, subscribe to the port
                 if (otherFitbitUltraPorts[port] != null)
                 {
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetActiveScoreName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetCaloriesOutName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDistanceName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetStepsName, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
+                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetActiveScore, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
+                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetCaloriesOut, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
+                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDistance, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
+                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetSteps, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
                     port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetTotalMinutesAsleep, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
                     port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetTotalSleepRecords, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
                     port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetTotalTimeInBed, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);

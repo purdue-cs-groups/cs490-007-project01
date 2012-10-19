@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using Common;
 
-namespace AppFitbitUltraPresence
+namespace AppFitbitUltraTV
 {
-    [System.AddIn.AddIn("AppFitbitUltraPresence")]
-    public class AppFitbitUltraPresence : ModuleBase
+    [System.AddIn.AddIn("AppFitbitUltraTV")]
+    public class AppFitbitUltraTV : ModuleBase
     {
         LogWindow logWindow;
 
         Dictionary<View.VPort, View.VCapability> otherFitbitUltraPorts;
 
-        bool lastResult = true;
+        int currentSteps = 0;
 
         public override void Start()
         {
@@ -73,7 +73,8 @@ namespace AppFitbitUltraPresence
 
                         if (otherFitbitUltraPorts[port] != null)
                         {
-                            SendGetDevicePresenceMethod(port, otherFitbitUltraPorts[port], counter);
+                            SendGetDeviceCurrentStepsMethod(port, otherFitbitUltraPorts[port], counter);
+                            SendGetDeviceCurrentStepsGoalMethod(port, otherFitbitUltraPorts[port], counter);
                         }
                     }
                 }
@@ -84,45 +85,87 @@ namespace AppFitbitUltraPresence
 
         #region Driver Methods
 
-        public void SendGetDevicePresenceMethod(View.VPort port, View.VCapability capability, int counter)
+        public void SendGetDeviceCurrentStepsMethod(View.VPort port, View.VCapability capability, int counter)
         {
             IList<View.VParamType> retVals;
 
             try
             {
                 IList<View.VParamType> parameters = new List<View.VParamType>();
-                
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDevicePresence, parameters, ControlPort, capability, ControlPortCapability);
+                parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
+
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetSteps, parameters, ControlPort, capability, ControlPortCapability);
             }
             catch (Exception e)
             {
-                logger.Log("Error while calling getDevicePresence request: {0}", e.ToString());
+                logger.Log("Error while calling getSteps request: {0}", e.ToString());
                 return;
             }
 
-            bool result = false;
+            int result = 0;
 
             string message = "";
             if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
             {
-                result = Convert.ToBoolean(retVals[0].Value());
-                message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetDevicePresence, port.ToString(), result);
+                result = Convert.ToInt32(retVals[0].Value());
+                message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetSteps, port.ToString(), result);
             }
             else
             {
-                message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetDevicePresence, port.ToString());
+                message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetSteps, port.ToString());
                 return;
             }
 
             LogMessageToWindow(message);
 
-            if (result == true &&
-                lastResult == false)
+            currentSteps = result;
+        }
+
+        public void SendGetDeviceCurrentStepsGoalMethod(View.VPort port, View.VCapability capability, int counter)
+        {
+            IList<View.VParamType> retVals;
+
+            try
             {
-                LogMessageToWindow("User has just entered the scene.");
+                IList<View.VParamType> parameters = new List<View.VParamType>();
+                parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
+
+                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetStepsGoal, parameters, ControlPort, capability, ControlPortCapability);
+            }
+            catch (Exception e)
+            {
+                logger.Log("Error while calling getStepsGoal request: {0}", e.ToString());
+                return;
             }
 
-            lastResult = result;
+            int result = 0;
+
+            string message = "";
+            if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+            {
+                result = Convert.ToInt32(retVals[0].Value());
+                message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetStepsGoal, port.ToString(), result);
+            }
+            else
+            {
+                message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetStepsGoal, port.ToString());
+                return;
+            }
+
+            LogMessageToWindow(message);
+
+            if (currentSteps >= result)
+            {
+                // enable TV
+
+                LogMessageToWindow("User has met their steps goal for today, TV has been enabled.");
+            }
+            else
+            {
+                // disable TV
+
+                LogMessageToWindow("User has not met their steps goal for today, TV has been disabled.");
+            }
         }
 
         public void LogMessageToWindow(string message)
