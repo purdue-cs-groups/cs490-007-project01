@@ -1,26 +1,22 @@
 ﻿<Modules>
   
   <Module FriendlyName="Fitbit1" AppName="DriverFitbitUltra by Matt" BinaryName="DriverFitbitUltra" AutoStart="1">
-    <Args Count="4" val1="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    val2="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    val3="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    val4="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+    <Args Count="4" val1="a57cf7b1e3f34405a9d80b9e520c50ec"
+                    val2="53d618141c5c4b6f929506ef41d9611f"
+                    val3="81bf9f112fd9f53315eee6abccfef80c"
+                    val4="1fb6b19c7981101260cf3d8342946da9" />
     <RoleList>
       <Role Name="fitbitUltra"/>
     </RoleList>
   </Module>
 
-  <!--<Module FriendlyName="Fitbit2" AppName="DriverFitbitUltra by Matt" BinaryName="DriverFitbitUltra" AutoStart="1">
-    <Args Count="4" val1="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    val2="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    val3="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    val4="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+  <Module FriendlyName="ZSwitch1" AppName="DriverZwaveZensys by HomeOS" BinaryName="DriverZwaveZensys" AutoStart="1">
     <RoleList>
-      <Role Name="fitbitUltra"/>
+      <Role Name="switchbinary"/>
     </RoleList>
-  </Module>-->
+  </Module>
   
-  <Module FriendlyName="FitbitUltraPresence" AppName="AppFitbitUltraPresence by Matt" BinaryName="AppFitbitUltraPresence" AutoStart="1">
+  <Module FriendlyName="FitbitUltraTV" AppName="AppFitbitUltraTV by Matt" BinaryName="AppFitbitUltraTV" AutoStart="1">
     <RoleList>
       <Role Name="fitbitUltra"/>
     </RoleList>

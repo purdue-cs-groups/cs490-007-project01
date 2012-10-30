@@ -9,22 +9,33 @@ namespace AppFitbitUltraTV
     [System.AddIn.AddIn("AppFitbitUltraTV")]
     public class AppFitbitUltraTV : ModuleBase
     {
-        LogWindow logWindow;
+        #region Fitbit Ultra Variables
 
-        Dictionary<View.VPort, View.VCapability> otherFitbitUltraPorts;
+        View.VPort fitbitPort = null;
+        View.VCapability fitbitPortCapability = null;
+
+        #endregion
+
+        #region ZWave Variables
+
+        View.VPort switchPort = null;
+        View.VCapability switchPortCapability = null;
+
+        #endregion
+
+        LogWindow logWindow = null;
 
         int currentSteps = 0;
 
         public override void Start()
         {
             logger.Log("Starting {0}", ToString());
- 
-            otherFitbitUltraPorts = new Dictionary<View.VPort, View.VCapability>();
 
             IList<View.VPort> allPortsList = GetAllPortsFromPlatform();
-
-            if (allPortsList != null)
-                ProcessAllPortsList(allPortsList);
+            foreach (View.VPort port in allPortsList)
+            {
+                PortRegistered(port);
+            }
 
             ShowWindow();
 
@@ -48,8 +59,8 @@ namespace AppFitbitUltraTV
 
         public override void Stop()
         {
-            if (logWindow != null) 
-                 logWindow.Invoke(new Action(delegate() { logWindow.Close(); }));
+            if (logWindow != null)
+                logWindow.Invoke(new Action(delegate() { logWindow.Close(); }));
 
             Finished();
         }
@@ -64,19 +75,10 @@ namespace AppFitbitUltraTV
                 lock (this)
                 {
                     if (logWindow != null)
-                        logWindow.Invoke(new Action(delegate() { logWindow.OtherPortsLog(String.Format("{0} active Fitbit Ultra ports", otherFitbitUltraPorts.Count)); }));
+                        logWindow.Invoke(new Action(delegate() { logWindow.OtherPortsLog(String.Format("{0} active Fitbit Ultra ports", 1)); }));
 
-                    List<View.VPort> ports = otherFitbitUltraPorts.Keys.ToList();
-                    foreach (View.VPort port in ports)
-                    {
-                        RequestCapabilities(port);
-
-                        if (otherFitbitUltraPorts[port] != null)
-                        {
-                            SendGetDeviceCurrentStepsMethod(port, otherFitbitUltraPorts[port], counter);
-                            SendGetDeviceCurrentStepsGoalMethod(port, otherFitbitUltraPorts[port], counter);
-                        }
-                    }
+                    SendGetDeviceCurrentStepsMethod(counter);
+                    SendGetDeviceCurrentStepsGoalMethod(counter);
                 }
 
                 System.Threading.Thread.Sleep(1 * 30 * 1000); // sleep 30 seconds
@@ -85,86 +87,237 @@ namespace AppFitbitUltraTV
 
         #region Driver Methods
 
-        public void SendGetDeviceCurrentStepsMethod(View.VPort port, View.VCapability capability, int counter)
+        public void SendGetDeviceCurrentStepsMethod(int counter)
         {
-            IList<View.VParamType> retVals;
-
-            try
+            if (fitbitPort != null && fitbitPortCapability == null)
             {
-                IList<View.VParamType> parameters = new List<View.VParamType>();
-                parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
-
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetSteps, parameters, ControlPort, capability, ControlPortCapability);
-            }
-            catch (Exception e)
-            {
-                logger.Log("Error while calling getSteps request: {0}", e.ToString());
-                return;
+                fitbitPortCapability = GetCapability(fitbitPort, Globals.UserSystem);
             }
 
-            int result = 0;
-
-            string message = "";
-            if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+            if (fitbitPort != null && fitbitPortCapability != null)
             {
-                result = Convert.ToInt32(retVals[0].Value());
-                message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetSteps, port.ToString(), result);
-            }
-            else
-            {
-                message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetSteps, port.ToString());
-                return;
-            }
+                IList<View.VParamType> retVals;
 
-            LogMessageToWindow(message);
+                try
+                {
+                    IList<View.VParamType> parameters = new List<View.VParamType>();
+                    parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
 
-            currentSteps = result;
+                    retVals = fitbitPort.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetSteps, parameters, ControlPort, fitbitPortCapability, ControlPortCapability);
+                }
+                catch (Exception e)
+                {
+                    logger.Log("Error while calling {0} request: {1}", RoleFitbitUltra.OpGetSteps, e.ToString());
+                    return;
+                }
+
+                int result = 0;
+
+                string message = "";
+                if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+                {
+                    result = Convert.ToInt32(retVals[0].Value());
+                    message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetSteps, fitbitPort.ToString(), result);
+                }
+                else
+                {
+                    message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetSteps, fitbitPort.ToString());
+                    return;
+                }
+
+                LogMessageToWindow(message);
+
+                currentSteps = result;
+            }
         }
 
-        public void SendGetDeviceCurrentStepsGoalMethod(View.VPort port, View.VCapability capability, int counter)
+        public void SendGetDeviceCurrentStepsGoalMethod(int counter)
         {
-            IList<View.VParamType> retVals;
-
-            try
+            if (fitbitPort != null && fitbitPortCapability == null)
             {
-                IList<View.VParamType> parameters = new List<View.VParamType>();
-                parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
-
-                retVals = port.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetStepsGoal, parameters, ControlPort, capability, ControlPortCapability);
-            }
-            catch (Exception e)
-            {
-                logger.Log("Error while calling getStepsGoal request: {0}", e.ToString());
-                return;
+                fitbitPortCapability = GetCapability(fitbitPort, Globals.UserSystem);
             }
 
-            int result = 0;
-
-            string message = "";
-            if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+            if (fitbitPort != null && fitbitPortCapability != null)
             {
-                result = Convert.ToInt32(retVals[0].Value());
-                message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetStepsGoal, port.ToString(), result);
+                IList<View.VParamType> retVals;
+
+                try
+                {
+                    IList<View.VParamType> parameters = new List<View.VParamType>();
+                    parameters.Add(new ParamType(ParamType.SimpleType.binary, "", DateTime.Today, "activityDate"));
+
+                    retVals = fitbitPort.Invoke(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetStepsGoal, parameters, ControlPort, fitbitPortCapability, ControlPortCapability);
+                }
+                catch (Exception e)
+                {
+                    logger.Log("Error while calling {0} request: {1}", RoleFitbitUltra.OpGetStepsGoal, e.ToString());
+                    return;
+                }
+
+                int result = 0;
+
+                string message = "";
+                if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+                {
+                    result = Convert.ToInt32(retVals[0].Value());
+                    message = String.Format("{0} success to {1} result = {2}", RoleFitbitUltra.OpGetStepsGoal, fitbitPort.ToString(), result);
+                }
+                else
+                {
+                    message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetStepsGoal, fitbitPort.ToString());
+                    return;
+                }
+
+                LogMessageToWindow(message);
+
+                if (currentSteps >= result)
+                {
+                    // enable TV
+                    counter++;
+                    if (SendGetSwitchStatusMethod(counter) == 0)
+                    {
+                        counter++;
+                        SendTurnOnSwitchMethod(counter);
+                    }
+
+                    LogMessageToWindow("User has met their steps goal for today, TV has been enabled.");
+                }
+                else
+                {
+                    // disable TV
+                    counter++;
+                    if (SendGetSwitchStatusMethod(counter) != 0)
+                    {
+                        counter++;
+                        SendTurnOffSwitchMethod(counter);
+                    }
+
+                    LogMessageToWindow("User has not met their steps goal for today, TV has been disabled.");
+                }
             }
-            else
+        }
+
+        public int SendGetSwitchStatusMethod(int counter)
+        {
+            if (switchPort != null && switchPortCapability == null)
             {
-                message = String.Format("{0} failure to {1}", RoleFitbitUltra.OpGetStepsGoal, port.ToString());
-                return;
+                switchPortCapability = GetCapability(switchPort, Globals.UserSystem);
             }
 
-            LogMessageToWindow(message);
-
-            if (currentSteps >= result)
+            if (switchPort != null && switchPortCapability != null)
             {
-                // enable TV
+                IList<View.VParamType> retVals = null;
 
-                LogMessageToWindow("User has met their steps goal for today, TV has been enabled.");
+                try
+                {
+                    IList<View.VParamType> parameters = new List<View.VParamType>();
+
+                    retVals = switchPort.Invoke(RoleSwitchBinary.RoleName, RoleSwitchBinary.OpGetName, parameters, ControlPort, switchPortCapability, ControlPortCapability);
+                }
+                catch (Exception e)
+                {
+                    logger.Log("Error while calling {0} request: {1}", RoleSwitchBinary.OpGetName, e.ToString());
+                }
+
+                int result = 0;
+
+                string message = "";
+                if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+                {
+                    result = Convert.ToInt32(retVals[0].Value());
+                    message = String.Format("{0} success to {1} result = {2}", RoleSwitchBinary.OpGetName, switchPort.ToString(), result);
+                }
+                else
+                {
+                    message = String.Format("{0} failure to {1}", RoleSwitchBinary.OpGetName, switchPort.ToString());
+                }
+
+                LogMessageToWindow(message);
+
+                return result;
             }
-            else
-            {
-                // disable TV
 
-                LogMessageToWindow("User has not met their steps goal for today, TV has been disabled.");
+            return -1;
+        }
+
+        public void SendTurnOnSwitchMethod(int counter)
+        {
+            if (switchPort != null && switchPortCapability == null)
+            {
+                switchPortCapability = GetCapability(switchPort, Globals.UserSystem);
+            }
+
+            if (switchPort != null && switchPortCapability != null)
+            {
+                IList<View.VParamType> retVals = null;
+
+                try
+                {
+                    IList<View.VParamType> parameters = new List<View.VParamType>();
+                    parameters.Add(new ParamType(ParamType.SimpleType.integer, "8", (byte)255, "level"));
+
+                    retVals = switchPort.Invoke(RoleSwitchBinary.RoleName, RoleSwitchBinary.OpSetName, parameters, ControlPort, switchPortCapability, ControlPortCapability);
+                }
+                catch (Exception e)
+                {
+                    logger.Log("Error while calling {0} request: {1}", RoleSwitchBinary.OpSetName, e.ToString());
+                }
+
+                int result = 0;
+
+                string message = "";
+                if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+                {
+                    result = Convert.ToInt32(retVals[0].Value());
+                    message = String.Format("{0} success to {1} result = {2}", RoleSwitchBinary.OpSetName, switchPort.ToString(), result);
+                }
+                else
+                {
+                    message = String.Format("{0} failure to {1}", RoleSwitchBinary.OpSetName, switchPort.ToString());
+                }
+
+                LogMessageToWindow(message);
+            }
+        }
+
+        public void SendTurnOffSwitchMethod(int counter)
+        {
+            if (switchPort != null && switchPortCapability == null)
+            {
+                switchPortCapability = GetCapability(switchPort, Globals.UserSystem);
+            }
+
+            if (switchPort != null && switchPortCapability != null)
+            {
+                IList<View.VParamType> retVals = null;
+
+                try
+                {
+                    IList<View.VParamType> parameters = new List<View.VParamType>();
+                    parameters.Add(new ParamType(ParamType.SimpleType.integer, "8", (byte)0, "level"));
+
+                    retVals = switchPort.Invoke(RoleSwitchBinary.RoleName, RoleSwitchBinary.OpSetName, parameters, ControlPort, switchPortCapability, ControlPortCapability);
+                }
+                catch (Exception e)
+                {
+                    logger.Log("Error while calling {0} request: {1}", RoleSwitchBinary.OpSetName, e.ToString());
+                }
+
+                int result = 0;
+
+                string message = "";
+                if (retVals[0].Maintype() != (int)ParamType.SimpleType.error)
+                {
+                    result = Convert.ToInt32(retVals[0].Value());
+                    message = String.Format("{0} success to {1} result = {2}", RoleSwitchBinary.OpSetName, switchPort.ToString(), result);
+                }
+                else
+                {
+                    message = String.Format("{0} failure to {1}", RoleSwitchBinary.OpSetName, switchPort.ToString());
+                }
+
+                LogMessageToWindow(message);
             }
         }
 
@@ -180,37 +333,25 @@ namespace AppFitbitUltraTV
 
         #region Port Management
 
-        public void RequestCapabilities(View.VPort port)
-        {
-            if (otherFitbitUltraPorts[port] == null)
-            {
-                otherFitbitUltraPorts[port] = GetCapability(port, Globals.UserSystem);
-
-                if (otherFitbitUltraPorts[port] != null)
-                {
-                    port.Subscribe(RoleFitbitUltra.RoleName, RoleFitbitUltra.OpGetDevicePresence, ControlPort, otherFitbitUltraPorts[port], ControlPortCapability);
-                }
-            }
-        }
-
-        public void ProcessAllPortsList(IList<View.VPort> portList)
-        {
-            foreach (View.VPort port in portList)
-            {
-                PortRegistered(port);
-            }
-        }
-
         public override void PortRegistered(View.VPort port)
         {
             logger.Log("{0} got registeration notification for {1}", ToString(), port.ToString());
 
             lock (this)
             {
-                if (!otherFitbitUltraPorts.ContainsKey(port) && Role.ContainsRole(port, RoleFitbitUltra.RoleName) && !IsMyPort(port))
+                if (Role.ContainsRole(port, RoleFitbitUltra.RoleName))
                 {
-                    otherFitbitUltraPorts[port] = null;
-                    logger.Log("{0} added port {1}", this.ToString(), port.ToString());
+                    fitbitPort = port;
+                    logger.Log("{0} added fitbitUltra port {1}", this.ToString(), port.ToString());
+
+                    if (logWindow != null)
+                        logWindow.Invoke(new Action(delegate() { logWindow.ConsoleLog("added port " + port.ToString()); }));
+                }
+
+                if (Role.ContainsRole(port, RoleSwitchBinary.RoleName))
+                {
+                    switchPort = port;
+                    logger.Log("{0} added switchbinary port {0}", this.ToString(), port.ToString());
 
                     if (logWindow != null)
                         logWindow.Invoke(new Action(delegate() { logWindow.ConsoleLog("added port " + port.ToString()); }));
@@ -222,10 +363,19 @@ namespace AppFitbitUltraTV
         {
             lock (this)
             {
-                if (otherFitbitUltraPorts.ContainsKey(port))
+                if (port.Equals(fitbitPort))
                 {
-                    otherFitbitUltraPorts.Remove(port);
-                    logger.Log("{0} deregistered port {1}", this.ToString(), port.GetInfo().ModuleFacingName());
+                    fitbitPort = null;
+                    logger.Log("{0} removed fitbitUltra port {1}", this.ToString(), port.ToString());
+
+                    if (logWindow != null)
+                        logWindow.Invoke(new Action(delegate() { logWindow.ConsoleLog("removed port " + port.ToString()); }));
+                }
+
+                if (port.Equals(switchPort))
+                {
+                    switchPort = null;
+                    logger.Log("{0} removed switchbinary port {0}", this.ToString(), port.ToString());
 
                     if (logWindow != null)
                         logWindow.Invoke(new Action(delegate() { logWindow.ConsoleLog("removed port " + port.ToString()); }));
